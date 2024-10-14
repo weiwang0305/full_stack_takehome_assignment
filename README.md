@@ -31,6 +31,9 @@
 
 - **No Figma Provided**: We have deliberately not provided Figma or design assets for this project. This is to give you the freedom to design the table and modals as you see fit. Part of the evaluation will be based on your ability to create a user-friendly, intuitive UI without strict design guidelines. You're free to choose the best layout, color schemes, and UX patterns, and UI Libraries that fit the task.
 
+**Evaluation**:
+
+Very simply, you are evaluated on the quality of the code, functionality, and design (UI/UX) of the product, which are all equally important (and hard requirements) for this role. This is deliberately open ended to give you space to show what you can do in all three pillars. We are looking for 10x engineers with a great eye for design.
 
 **Mock Data**: You will be working with the following mock JSON data. The data will always follow a static model. Your API should serve this data to the frontend:
 
