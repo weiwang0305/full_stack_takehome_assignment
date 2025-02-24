@@ -2,9 +2,10 @@ import { Record } from '@/src/types';
 
 interface TableRowProps {
   record: Record;
+  onClick: () => void;
 }
 
-export const TableRow = ({ record }: TableRowProps) => {
+export const TableRow = ({ record, onClick }: TableRowProps) => {
   const getCellStyle = (field: string, record: Record) => {
     if (record.errors[field]) {
       return record.errors[field].severity === 'critical'
@@ -16,8 +17,8 @@ export const TableRow = ({ record }: TableRowProps) => {
 
   return (
     <tr
-      key={record.id}
-      className='hover:bg-gray-50 transition-colors duration-150 ease-in-out'
+      className='hover:bg-gray-50 transition-colors duration-150 ease-in-out z-50'
+      onClick={onClick}
     >
       <td className='px-6 py-4 text-sm text-gray-900'>{record.id}</td>
       <td
@@ -36,7 +37,7 @@ export const TableRow = ({ record }: TableRowProps) => {
         </div>
       </td>
       <td
-        className={`px-6 py-4 text-sm text-gray-900 ${getCellStyle(
+        className={`px-6 py-4 text-sm atext-gray-900 ${getCellStyle(
           'email',
           record
         )}`}

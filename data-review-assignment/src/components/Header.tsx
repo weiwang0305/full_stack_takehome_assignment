@@ -50,7 +50,7 @@ export const Header: React.FC<PageHeaderProps> = ({
             <Button
               variant='outline'
               size='sm'
-              className='flex items-center gap-2'
+              className='flex items-center gap-2 p-2 rounded-md'
               onClick={handleExport}
             >
               <span>Export</span>

@@ -20,7 +20,9 @@ export default function Home({
   records,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
-    <div className={`${openSans.variable} font-open-sans`}>
+    <div
+      className={`${openSans.variable} font-open-sans fixed w-[100vw] h-[100vh]`}
+    >
       <DataReviewTable records={records} />
     </div>
   );
