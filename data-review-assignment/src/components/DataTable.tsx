@@ -88,21 +88,17 @@ const DataReviewTable: React.FC<DataReviewTableProps> = ({ records }) => {
     };
   }, [isDialogOpen]);
 
-  // Helper function to get severity class for error badges
   const getSeverityClass = (severity: string) => {
     switch (severity.toLowerCase()) {
-      case 'high':
+      case 'critical':
         return 'bg-red-100 text-red-700';
-      case 'medium':
-        return 'bg-orange-100 text-orange-700';
-      case 'low':
+      case 'warning':
         return 'bg-yellow-100 text-yellow-700';
       default:
         return 'bg-gray-100 text-gray-700';
     }
   };
 
-  // Check if record has any errors
   const hasErrors = (record: Record) => {
     return record.errors && Object.keys(record.errors).length > 0;
   };
@@ -139,7 +135,7 @@ const DataReviewTable: React.FC<DataReviewTableProps> = ({ records }) => {
             </th>
           </tr>
         </thead>
-        <tbody className='divide-y divide-gray-50'>
+        <tbody className='divide-y divide-gray-100'>
           {records.map((record) => (
             <TableRow
               key={record.id}
@@ -151,115 +147,96 @@ const DataReviewTable: React.FC<DataReviewTableProps> = ({ records }) => {
       </table>
 
       {isDialogOpen && selectedRecord && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm'>
           <div
             ref={dialogRef}
-            className='bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden animate-fade-in'
+            className='bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden animate-fade-in'
           >
-            <div className='bg-blue-600 p-6 text-white'>
-              <h2 className='text-xl font-semibold'>
-                Record Details: {selectedRecord.name}
-              </h2>
-            </div>
-
             <div className='p-6'>
-              <div className='space-y-5'>
-                <div className='flex items-center'>
-                  <div className='w-24 text-sm font-medium text-gray-400'>
-                    ID
-                  </div>
-                  <div className='text-gray-800 font-medium'>
-                    {selectedRecord.id}
-                  </div>
+              <div className='flex justify-between items-center mb-6'>
+                <h2 className='text-xl font-medium text-gray-800'>
+                  {selectedRecord.name}
+                </h2>
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    selectedRecord.status === 'active'
+                      ? 'bg-green-100 text-green-600'
+                      : selectedRecord.status === 'pending'
+                      ? 'bg-amber-100 text-amber-600'
+                      : 'bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  {selectedRecord.status}
+                </span>
+              </div>
+
+              <div className='space-y-4'>
+                <div className='flex'>
+                  <div className='w-20 text-sm text-gray-500'>ID</div>
+                  <div className='text-gray-700'>{selectedRecord.id}</div>
                 </div>
 
-                <div className='flex items-center'>
-                  <div className='w-24 text-sm font-medium text-gray-400'>
-                    Email
-                  </div>
-                  <div className='text-gray-800 break-all'>
+                <div className='flex'>
+                  <div className='w-20 text-sm text-gray-500'>Email</div>
+                  <div className='text-gray-700 break-all'>
                     {selectedRecord.email}
                   </div>
                 </div>
 
-                <div className='flex items-start'>
-                  <div className='w-24 text-sm font-medium text-gray-400'>
-                    Address
-                  </div>
-                  <div className='text-gray-800'>
+                <div className='flex'>
+                  <div className='w-20 text-sm text-gray-500'>Address</div>
+                  <div className='text-gray-700'>
                     {selectedRecord.street}
-                    <br />
-                    {selectedRecord.city}, {selectedRecord.zipcode}
+                    {selectedRecord.street &&
+                      (selectedRecord.city || selectedRecord.zipcode) && <br />}
+                    {selectedRecord.city}
+                    {selectedRecord.city && selectedRecord.zipcode && ', '}
+                    {selectedRecord.zipcode}
                   </div>
                 </div>
 
-                <div className='flex items-center'>
-                  <div className='w-24 text-sm font-medium text-gray-400'>
-                    Phone
-                  </div>
-                  <div className='text-gray-800'>{selectedRecord.phone}</div>
+                <div className='flex'>
+                  <div className='w-20 text-sm text-gray-500'>Phone</div>
+                  <div className='text-gray-700'>{selectedRecord.phone}</div>
                 </div>
-
-                <div className='flex items-center'>
-                  <div className='w-24 text-sm font-medium text-gray-400'>
-                    Status
-                  </div>
-                  <div>
-                    <span
-                      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                        selectedRecord.status === 'active'
-                          ? 'bg-green-100 text-green-700'
-                          : selectedRecord.status === 'pending'
-                          ? 'bg-amber-100 text-amber-700'
-                          : 'bg-gray-100 text-gray-700'
-                      }`}
-                    >
-                      {selectedRecord.status}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Error Summary Section */}
-                {hasErrors(selectedRecord) && (
-                  <div className='mt-6 pt-5 border-t border-gray-100'>
-                    <h3 className='text-lg font-medium text-gray-900 mb-3'>
-                      Error Summary
-                    </h3>
-                    <div className='space-y-3'>
-                      {Object.entries(selectedRecord.errors).map(
-                        ([field, error]) => (
-                          <div
-                            key={field}
-                            className='bg-gray-50 p-3 rounded-md'
-                          >
-                            <div className='flex justify-between items-start'>
-                              <span className='text-sm font-medium text-gray-700 capitalize'>
-                                {field}
-                              </span>
-                              <span
-                                className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSeverityClass(
-                                  error.severity
-                                )}`}
-                              >
-                                {error.severity}
-                              </span>
-                            </div>
-                            <p className='text-sm text-gray-600 mt-1'>
-                              {error.message}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                )}
               </div>
+
+              {hasErrors(selectedRecord) && (
+                <div className='mt-6 pt-4 border-t border-gray-100'>
+                  <h3 className='text-sm font-medium text-gray-800 mb-3'>
+                    Error Summary
+                  </h3>
+                  <div className='space-y-2'>
+                    {Object.entries(selectedRecord.errors).map(
+                      ([field, error]) => (
+                        <div key={field} className='bg-gray-50 p-3 rounded-md'>
+                          <div className='flex justify-between items-center'>
+                            <span className='text-sm text-gray-700 capitalize'>
+                              {field}
+                            </span>
+                            <span
+                              className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityClass(
+                                error.severity
+                              )}`}
+                            >
+                              {error.severity}
+                            </span>
+                          </div>
+                          <p className='text-sm text-gray-600 mt-1'>
+                            {error.message}
+                          </p>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <div className='border-t border-gray-100 p-4 bg-gray-50 flex justify-end'>
+            <div className='p-4 flex justify-end'>
               <button
                 onClick={closeDialog}
-                className='px-4 py-2 bg-white hover:bg-gray-50 text-gray-700 text-sm font-medium rounded-md border border-gray-200 shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+                className='px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300'
               >
                 Close
               </button>

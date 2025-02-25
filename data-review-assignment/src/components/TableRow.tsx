@@ -7,12 +7,13 @@ interface TableRowProps {
 
 export const TableRow = ({ record, onClick }: TableRowProps) => {
   const getCellStyle = (field: string, record: Record) => {
+    console.log(record.errors);
     if (record.errors[field]) {
       return record.errors[field].severity === 'critical'
         ? 'border-l-2 border-l-red-500'
         : 'border-l-2 border-l-yellow-500';
     }
-    return '';
+    return 'border-l-2 border-l-green-500';
   };
 
   return (
@@ -20,84 +21,84 @@ export const TableRow = ({ record, onClick }: TableRowProps) => {
       className='hover:bg-gray-50 transition-colors duration-150 ease-in-out z-50'
       onClick={onClick}
     >
-      <td className='px-6 py-4 text-sm text-gray-900'>{record.id}</td>
+      <td className='px-4 py-4 text-sm text-gray-900'>{record.id}</td>
       <td
-        className={`px-6 py-4 text-sm text-gray-900 ${getCellStyle(
+        className={`px-4 py-4 text-sm text-gray-900 ${getCellStyle(
           'name',
           record
         )}`}
       >
         <div className='group relative'>
-          {record.name || '-'}
           {record.errors.name && (
-            <div className='absolute z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded px-2 py-1 -mt-8 ml-4'>
+            <div className='absolute w-[120px] z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded -translate-y-12 -translate-x-12 p-2'>
               {record.errors.name.message}
             </div>
           )}
+          {record.name || '-'}
         </div>
       </td>
       <td
-        className={`px-6 py-4 text-sm atext-gray-900 ${getCellStyle(
+        className={`px-6 text-sm atext-gray-900 ${getCellStyle(
           'email',
           record
         )}`}
       >
         <div className='group relative'>
-          {record.email || '-'}
           {record.errors.email && (
-            <div className='absolute z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded px-2 py-1 -mt-8 ml-4'>
+            <div className='absolute w-[140px] z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded -translate-y-12 -translate-x-2 p-2'>
               {record.errors.email.message}
             </div>
           )}
+          {record.email || '-'}
         </div>
       </td>
       <td
-        className={`px-6 py-4 text-sm text-gray-900 ${getCellStyle(
+        className={`px-6 text-sm text-gray-900 ${getCellStyle(
           'street',
           record
         )}`}
       >
         <div className='group relative'>
-          {record.street || '-'}
           {record.errors.street && (
-            <div className='absolute z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded px-2 py-1 -mt-8 ml-4'>
+            <div className='absolute w-[120px] z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded -translate-y-12 -translate-x-4 p-2'>
               {record.errors.street.message}
             </div>
           )}
+          {record.street || '-'}
         </div>
       </td>
-      <td className='px-6 py-4 text-sm text-gray-900'>{record.city}</td>
+      <td className='px-6 text-sm text-gray-900'>{record.city}</td>
       <td
-        className={`px-6 py-4 text-sm text-gray-900 ${getCellStyle(
+        className={`px-6 text-sm text-gray-900 ${getCellStyle(
           'zipcode',
           record
         )}`}
       >
         <div className='group relative'>
-          {record.zipcode || '-'}
           {record.errors.zipcode && (
-            <div className='absolute z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded px-2 py-1 -mt-8 ml-4'>
+            <div className='absolute w-[150px] z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded -translate-y-12 -translate-x-12 p-2'>
               {record.errors.zipcode.message}
             </div>
           )}
+          {record.zipcode || '-'}
         </div>
       </td>
       <td
-        className={`px-6 py-4 text-sm text-gray-900 ${getCellStyle(
+        className={`px-6 text-sm text-gray-900 ${getCellStyle(
           'phone',
           record
         )}`}
       >
         <div className='group relative'>
-          {record.phone || '-'}
           {record.errors.phone && (
-            <div className='absolute z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded px-2 py-1 -mt-8 ml-4'>
+            <div className='absolute w-[150px] z-10 invisible group-hover:visible bg-gray-900 text-white text-xs rounded -translate-y-12 -translate-x-4 p-2'>
               {record.errors.phone.message}
             </div>
           )}
+          {record.phone || '-'}
         </div>
       </td>
-      <td className='px-6 py-4'>
+      <td className='px-6'>
         <span
           className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
             record.status === 'active'
